@@ -12,21 +12,29 @@ function App() {
   const handleEnter = (e) => {
     if (e.key === 'Enter') {
       if (item) {
-        setGroceryItems([...groceryItems, {
-          quantity: 1,
-          name: 'Cake',
-          completed: false
-        }])
+        const updatedList = [...groceryItems]
+        const matched = updatedList.findIndex((el) => el.name === item)
+        if (matched == -1) {
+          updatedList.push({
+            name: item,
+            quantity: 1,
+            completed: false
+          })
+        }
+        else {
+          updatedList[matched].quantity++
+        }
+        setGroceryItems(updatedList)
         setItem('')
       }
     }
   }
   const renderList = () => {
-    return groceryItems.map((ele,id) => (
-      <li key={id}>
+    return groceryItems.map((ele) => (
+      <li key={ele.name}>
         <div className="container">
           <input type="checkbox" />
-          <p>{ele.name}</p>
+          <p>{ele.name}</p><span>{ele.quantity > 1 && ele.quantity}</span>
         </div>
         <button className='removeBtn'>x</button>
       </li>
